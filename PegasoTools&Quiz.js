@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.1
+// @version 1.2
 // @run-at   document-end
 // @license MIT
 // ==/UserScript==
