@@ -12,6 +12,7 @@
 //PAGINA TUTTE LE LEZIONI -> Estrai in HTLM - Espandi accordions
 if (urlPagina.includes(urlLezioni)) {
     console.log("PAGINA LEZIONI");
+    var header = document.querySelector(".panel-default");
 
     //ESPANDI LEZIONI
     //BOTTONE ESPANDI LEZIONI
