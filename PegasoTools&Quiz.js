@@ -9,15 +9,31 @@
 // @license MIT
 // ==/UserScript==
 
-//URL della pagina corrente
-var urlPagina=window.location.href;
-// URL specificati
-var urlLezioni = "lms-courses.pegaso.multiversity.click/main/lp-video_student_view/lp-video_controller.php";
-var urlQuiz = "lms-courses.pegaso.multiversity.click/main/lp-video_student_view";
+//PAGINA TUTTE LE LEZIONI -> Estrai in HTLM - Espandi accordions
+if (urlPagina.includes(urlLezioni)) {
+    console.log("PAGINA LEZIONI");
 
+    //ESPANDI LEZIONI
+    //BOTTONE ESPANDI LEZIONI
+    var buttonEspandi = document.createElement("button");
+    buttonEspandi.id = 'espandi';
+    buttonEspandi.textContent = 'Espandi moduli lezioni';
 
+    // Creare un gestore di eventi "click"
+    buttonEspandi.addEventListener('click', function() {
+        // Cercare tutti gli elementi con la classe che inizia con "lesson-single"
+        var lessons = document.querySelectorAll("[class*='lesson-single']");
+
+        // Iterare su tutti gli elementi trovati
+        for (var lesson of lessons) {
+            // Modificare la loro visibilità
+            lesson.style.display = lesson.style.display === 'none' ? '' : 'none';
+        }
+    });
+    header.parentNode.insertBefore(buttonEspandi, header);
+    
 //PAGINA QUIZ -> Evidenzia - Seleziona
-if (urlPagina.includes(urlQuiz)) {
+} else if (urlPagina.includes(urlQuiz)) {
     console.log("PAGINA QUIZ");
     // Recupera il contenuto del tuo script JavaScript
     var scripts = document.getElementsByTagName("script");
@@ -111,9 +127,3 @@ if (urlPagina.includes(urlQuiz)) {
         }
     }, 500);//controlla ogni tot millisecondi
 })();
-
-
-
-
-
-
