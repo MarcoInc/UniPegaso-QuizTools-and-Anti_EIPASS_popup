@@ -9,6 +9,13 @@
 // @license MIT
 // ==/UserScript==
 
+//URL della pagina corrente
+var urlPagina=window.location.href;
+// URL specificati
+var urlLezioni = "lms-courses.pegaso.multiversity.click/main/lp-video_student_view/lp-video_controller.php";
+var urlQuiz = "lms-courses.pegaso.multiversity.click/main/lp-video_student_view";
+
+
 //PAGINA TUTTE LE LEZIONI -> Estrai in HTLM - Espandi accordions
 if (urlPagina.includes(urlLezioni)) {
     console.log("PAGINA LEZIONI");
