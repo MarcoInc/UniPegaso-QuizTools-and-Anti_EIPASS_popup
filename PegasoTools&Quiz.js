@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.0
+// @version 1.1
 // @run-at   document-end
 // @license MIT
 // ==/UserScript==
@@ -31,7 +31,7 @@ if (urlPagina.includes(urlLezioni)) {
         }
     });
     header.parentNode.insertBefore(buttonEspandi, header);
-    
+
 //PAGINA QUIZ -> Evidenzia - Seleziona
 } else if (urlPagina.includes(urlQuiz)) {
     console.log("PAGINA QUIZ");
