@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.5
+// @version 1.5.1
 // @run-at   document-end
 // @license MIT
 // @namespace https://greasyfork.org/users/564300
