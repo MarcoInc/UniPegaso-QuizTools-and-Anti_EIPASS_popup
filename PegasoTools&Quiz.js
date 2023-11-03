@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.4
+// @version 1.4.5
 // @run-at   document-end
 // @license MIT
 // @namespace https://greasyfork.org/users/564300
@@ -27,16 +27,34 @@ if (urlPagina.includes(urlLezioni)) {
     var buttonEspandi = document.createElement("button");
     buttonEspandi.id = 'espandi';
     buttonEspandi.textContent = 'Espandi moduli lezioni';
+    var chapters;
+    if(document.querySelector("[class*='name-folder']")){
+       chapters = document.querySelectorAll("[class*='name-folder']");
+    }
  
     // Creare un gestore di eventi "click"
     buttonEspandi.addEventListener('click', function() {
         // Cercare tutti gli elementi con la classe che inizia con "lesson-single"
         var lessons = document.querySelectorAll("[class*='lesson-single']");
- 
+
         // Iterare su tutti gli elementi trovati
         for (var lesson of lessons) {
+            console.log("Moduli rilevati");
             // Modificare la loro visibilità
             lesson.style.display = lesson.style.display === 'none' ? '' : 'none';
+        }
+
+        if(chapters){
+            console.log("Capitoli rilevati");
+            for (var chapter of chapters) {
+            // Modificare la loro visibilità
+                chapter.classList.add("active")
+            }
+            var moduli=document.querySelectorAll(".media .content-folder")
+            for (var modulo of moduli) {
+                modulo.style.display = modulo.style.display === 'none' ? '' : 'none';
+
+            }
         }
     });
     header.parentNode.insertBefore(buttonEspandi, header);
