@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.4.8
+// @version 1.5
 // @run-at   document-end
 // @license MIT
 // @namespace https://greasyfork.org/users/564300
@@ -130,6 +130,7 @@ if (urlPagina.includes(urlLezioni)) {
             if (correctOption) {
                 // Evidenzia la risposta corretta in verde
                 correctOption.parentNode.parentNode.style.backgroundColor = "green";
+                correctOption.parentNode.parentNode.style.font = "italic bold 20px arial,serif"
             }
         }
     });//FINE EVIDENZIA
