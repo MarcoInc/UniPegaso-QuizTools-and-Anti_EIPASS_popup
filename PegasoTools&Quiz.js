@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.6
+// @version 1.6.1
 // @run-at   document-end
 // @license MIT
 // @namespace https://greasyfork.org/users/564300
@@ -65,10 +65,11 @@ if (urlPagina.includes(urlLezioni)) {
         }
     });
     header.parentNode.insertBefore(buttonEspandi, header);
- 
-//PAGINA QUIZ -> Evidenzia - Seleziona
+
+//PAGINA SINGOLA LEZIONE -> Visualizzazione automatica
 } else if (urlPagina.includes(urlQuiz)) {
     console.log("PAGINA QUIZ");
+
     // Recupera il contenuto del tuo script JavaScript
     var scripts = document.getElementsByTagName("script");
     var scriptContent = "";
@@ -91,7 +92,8 @@ if (urlPagina.includes(urlLezioni)) {
     //SELEZIONA -> checked
         // Creazione del pulsante di invio
     var button1 = document.createElement("button");
-    button1.innerHTML = "Seleziona le ESATTE";
+    button1.innerHTML = "Seleziona le ESATTE e completa";
+    button1.classList.add("scriptBtn");
     var header2 = document.querySelector(".panel-default");
     header2.parentNode.insertBefore(button1, header2);
  
@@ -111,12 +113,16 @@ if (urlPagina.includes(urlLezioni)) {
                 correctOption.checked = true;
             }
         }
+
+        document.querySelectorAll("button.btn.btn-success.btn-block.btn-submit")[0].click();
     });//FINE SELEZIONA
- 
+
+
     //EVIDENZIA
         // Creazione del pulsante di invio
     var button2 = document.createElement("button");
     button2.innerHTML = "Evidenzia le ESATTE";
+    button2.classList.add("scriptBtn");
     header2.parentNode.insertBefore(button2, header2);
  
     // Aggiunta dell'evento click al pulsante di invio
@@ -131,21 +137,21 @@ if (urlPagina.includes(urlLezioni)) {
             var correctOption = document.querySelector(selector);
             if (correctOption) {
                 // Evidenzia la risposta corretta in verde
-                correctOption.parentNode.parentNode.style.backgroundColor = "green";
-                correctOption.parentNode.parentNode.style.font = "italic bold 20px arial,serif"
+                correctOption.parentNode.parentNode.style.backgroundColor = "rgba(82, 192, 114, .5)";
             }
         }
     });//FINE EVIDENZIA
  
     //BOTTONE PREPARA PANIERE -> Thanks to Bruno
     var button3 = document.createElement("button");
-    button3.innerHTML = "Prepara paniere";
+    button3.innerHTML = "Prepara paniere (senza Errate)";
+    button3.classList.add("scriptBtn");
     header2.parentNode.insertBefore(button3, header2);
  
     var click=false; //evita panieri doppioni
     // Aggiunta dell'evento click al pulsante di invio
     button3.addEventListener("click", function () {
-        if(!click){
+        if(!click || !click2){
             console.log("Paniere generato");
             click=true;
             // Iterazione su tutte le domande
@@ -155,6 +161,8 @@ if (urlPagina.includes(urlLezioni)) {
                 var correctAnswer = match.match(/\d+/g)[1];
                 var selector = 'input[name="d' + questionNumber + '"][value="' + correctAnswer + '"]';
                 var correctOption = document.querySelector(selector);
+
+
                 if (correctOption) {
                     paniere += correctOption.parentNode.parentNode.parentNode.offsetParent.tHead.innerText.replace(/\t/, ") ") + '<br>' + correctOption.parentNode.parentNode.outerText.replace(/\t/, ") ") + '<br>--------------------<br>'
                 }
@@ -166,12 +174,13 @@ if (urlPagina.includes(urlLezioni)) {
             //Aggiunta paniere
             var paniereVisible = document.createElement("p");
             paniereVisible.id = 'Paniere'
-            paniereVisible.innerHTML = '<br>Lezione ' + numberLesson + ') <strong>' + document.querySelectorAll('.list-group-item.title-lesson')[0].outerText + '</strong>\n<br><br>\n' + paniere;
+            paniereVisible.innerHTML = 'Lezione ' + numberLesson + ') <strong>' + document.querySelectorAll('.list-group-item.title-lesson')[0].outerText + '</strong>\n<br><br>\n' + paniere;
             header2.parentNode.insertBefore(paniereVisible, header2);
  
             //Aggiunta button per copiare il testo
             var copia = document.createElement("button");
             copia.innerHTML = "Copia paniere";
+            copia.classList.add("scriptBtn");
             header2.parentNode.insertBefore(copia, header2);
  
  
@@ -186,6 +195,7 @@ if (urlPagina.includes(urlLezioni)) {
  
             var stampa = document.createElement("button");
             stampa.innerHTML = "Stampa paniere in pdf";
+            stampa.classList.add("scriptBtn");
             header2.parentNode.insertBefore(stampa, header2);
  
             stampa.onclick = function() {
@@ -208,8 +218,102 @@ if (urlPagina.includes(urlLezioni)) {
             console.log("Paniere già generato");
         }
     }); //FINE PREPARA PANIERE
+
+    //BOTTONE PREPARA PANIERE -> Thanks to Bruno
+    var button4 = document.createElement("button");
+    button4.innerHTML = "Prepara paniere (con Errate)";
+    button4.classList.add("scriptBtn");
+    header2.parentNode.insertBefore(button4, header2);
+
+    var click2=false; //evita panieri doppioni
+    // Aggiunta dell'evento click al pulsante di invio
+    button4.addEventListener("click", function () {
+        if(!click2 || !click){
+            console.log("Paniere generato");
+            click=true;
+            // Iterazione su tutte le domande
+            var paniere = '';
+            for (let match of matches) {
+                var domande = '';
+                var option = '';
+                var questionNumber = match.match(/\d+/g)[0];
+                var correctAnswer = match.match(/\d+/g)[1];
+                var selector = 'input[name="d' + questionNumber + '"][value="' + correctAnswer + '"]';
+                var correctOption = document.querySelector(selector);
+
+                for(let i = 1; i <= 4; i++){
+                    console.log('for' + correctAnswer)
+
+                    if(i != correctAnswer){
+                        selector = 'input[name="d' + questionNumber + '"][value="' + i + '"]';
+                        option = document.querySelector(selector);
+                        domande += option.parentNode.parentNode.outerText.replace(/\t/, ") ") + '<br>'
+                    } else {
+
+                        selector = 'input[name="d' + questionNumber + '"][value="' + correctAnswer + '"]';
+                        option = document.querySelector(selector);
+                        console.log(option.parentNode.parentNode)
+                        domande += '<span class="correctOption">' + option.parentNode.parentNode.outerText.replace(/\t/, ") ") + '</span> <= Corretta<br>'
+                    }
+                }
+
+                if (correctOption) {
+                    paniere += correctOption.parentNode.parentNode.parentNode.offsetParent.tHead.innerText.replace(/\t/, ") ") + '<br>' + domande + '<br>--------------------<br>'
+                }
+
+            }
+            //get numero della lezione
+            var numberLesson = /lp_id\=([0-9]+)/.exec(urlPagina)[1];
+
+            //Aggiunta paniere
+            var paniereVisible = document.createElement("p");
+            paniereVisible.id = 'Paniere'
+            paniereVisible.innerHTML = 'Lezione ' + numberLesson + ') <strong>' + document.querySelectorAll('.list-group-item.title-lesson')[0].outerText + '</strong>\n<br><br>\n' + paniere;
+            header2.parentNode.insertBefore(paniereVisible, header2);
+
+            //Aggiunta button per copiare il testo
+            var copia = document.createElement("button");
+            copia.innerHTML = "Copia paniere";
+            copia.classList.add("scriptBtn");
+            header2.parentNode.insertBefore(copia, header2);
+
+
+            copia.onclick = function() {
+                // selezione del contenuto
+                var copyText = document.querySelector("#Paniere");
+
+                // Copia il paniere
+                navigator.clipboard.writeText(copyText.innerText);
+
+            };
+
+            var stampa = document.createElement("button");
+            stampa.innerHTML = "Stampa paniere in pdf";
+            stampa.classList.add("scriptBtn");
+            header2.parentNode.insertBefore(stampa, header2);
+
+            stampa.onclick = function() {
+
+                var originalContents = document.body.innerHTML;
+
+                document.title = 'Lezione ' + numberLesson + ') ' + document.querySelectorAll('.list-group-item.title-lesson')[0].outerText;
+
+                document.body.innerHTML = '';
+
+                document.body.insertBefore(paniereVisible, null);
+
+                window.print();
+
+                document.body.innerHTML = originalContents;
+
+            };
+        }
+        else{
+            console.log("Paniere già generato");
+        }
+    }); //FINE PREPARA PANIERE
 }
- 
+
 //ANTI-POPUP EIPASS
 (function() {
     'use strict';
@@ -237,3 +341,42 @@ if (urlPagina.includes(urlLezioni)) {
         }
     }, 500);//controlla ogni tot millisecondi
 })(); //FINE ANTI-POPUO EIPASS
+
+
+const injectCSS = css => {
+  let el = document.createElement('style');
+  el.type = 'text/css';
+  el.innerText = css;
+  document.head.appendChild(el);
+  return el;
+};
+
+injectCSS(`
+   .scriptBtn {
+      margin: 10px 10px 20px 0;
+      background-color: #a42c52;
+      font-style: italic;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 5px 5px 8px -5px rgba(0,0,0,0.69);
+   }
+
+   #Paniere{
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 8px 9px 13px -1px rgba(0,0,0,0.4);
+   }
+
+   .correctOption{
+      color: green;
+      text-decoration: underline;
+      font-weight: bold;
+      print-color-adjust: exact;
+   }
+
+`);
+
+
