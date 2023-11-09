@@ -4,7 +4,7 @@
 // @grant    none
 // @author   MarcoInc
 // @description Rimuove popup EiPass, espande gli accordion dei moduli, aiuta nei test di autovalutazione
-// @version 1.5.1
+// @version 1.6
 // @run-at   document-end
 // @license MIT
 // @namespace https://greasyfork.org/users/564300
@@ -20,6 +20,8 @@ var urlQuiz = "lms-courses.pegaso.multiversity.click/main/lp-video_student_view"
 //PAGINA TUTTE LE LEZIONI -> Estrai in HTLM - Espandi accordions
 if (urlPagina.includes(urlLezioni)) {
     console.log("PAGINA LEZIONI");
+
+
     var header = document.querySelector(".panel-default");
  
     //ESPANDI LEZIONI
